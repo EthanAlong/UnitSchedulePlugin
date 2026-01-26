@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Revit Add-in Manifest File
+  Revit 插件清单文件
+
+  Installation Instructions / 安装说明:
+  1. Build the project in Release mode / 在 Release 模式下构建项目
+  2. Copy UnitSchedulePlugin.dll to: / 将 UnitSchedulePlugin.dll 复制到：
+     %APPDATA%\Autodesk\Revit\Addins\20XX\
+  3. Copy this .addin file to the same folder / 将此 .addin 文件复制到同一文件夹
+  4. Restart Revit / 重启 Revit
+
+  The plugin will appear in the Add-Ins tab under "Unit Schedule" panel
+  插件将出现在"附加模块"选项卡的"Unit Schedule"面板下
+-->
+<RevitAddIns>
+  <!-- External Application for Ribbon UI | 功能区 UI 的外部应用程序 -->
+  <AddIn Type="Application">
+    <Name>Unit Schedule Plugin</Name>
+    <Assembly>UnitSchedulePlugin.dll</Assembly>
+    <FullClassName>UnitSchedulePlugin.Application</FullClassName>
+    <ClientId>A1B2C3D4-E5F6-7890-ABCD-EF1234567890</ClientId>
+    <VendorId>YourCompanyName</VendorId>
+    <VendorDescription>Your Company Name - www.yourcompany.com</VendorDescription>
+  </AddIn>
+
+  <!-- External Command (can also be launched directly) | 外部命令（也可以直接启动） -->
+  <AddIn Type="Command">
+    <Name>Unit Schedule</Name>
+    <Assembly>UnitSchedulePlugin.dll</Assembly>
+    <FullClassName>UnitSchedulePlugin.Command</FullClassName>
+    <ClientId>A1B2C3D4-E5F6-7890-ABCD-EF1234567891</ClientId>
+    <VendorId>YourCompanyName</VendorId>
+    <VendorDescription>Your Company Name - www.yourcompany.com</VendorDescription>
+    <Text>Unit Schedule</Text>
+    <Description>Generate unit schedule with area analysis, open space tracking, and charts.
+生成带有面积分析、开放空间跟踪和图表的单元时间表。</Description>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <Discipline>Any</Discipline>
+    <AvailabilityClassName>UnitSchedulePlugin.Command</AvailabilityClassName>
+    <LongDescription>
+This plugin scans all rooms and areas in your Revit project to generate a comprehensive unit schedule including:
+
+- Unit inventory with gross/net/sellable areas
+- Private open space tracking (balconies, patios, terraces)
+- Public open space analysis (amenities, courtyards)
+- Interactive charts and statistics
+- Export to CSV and text reports
+
+All areas are displayed in Square Feet (Imperial units).
+
+此插件扫描 Revit 项目中的所有房间和区域，生成全面的单元时间表，包括：
+
+- 带有建筑面积/净面积/可售面积的单元清单
+- 私有开放空间跟踪（阳台、露台、平台）
+- 公共开放空间分析（设施、庭院）
+- 交互式图表和统计数据
+- 导出到 CSV 和文本报告
+
+所有面积均以平方英尺（英制单位）显示。
+    </LongDescription>
+  </AddIn>
+</RevitAddIns>
