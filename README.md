@@ -1,174 +1,134 @@
-# Unit Schedule Plugin for Revit
+# Unit Schedule
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Revit-2025-blue?style=for-the-badge&logo=autodesk" alt="Revit 2025"/>
-  <img src="https://img.shields.io/badge/.NET-8.0-purple?style=for-the-badge&logo=dotnet" alt=".NET 8.0"/>
-  <img src="https://img.shields.io/badge/WPF-Modern_UI-green?style=for-the-badge" alt="WPF"/>
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="MIT License"/>
-</p>
+**Unit mix, straight from the Revit model.**
 
-A professional Revit plugin for generating comprehensive unit schedules with area analysis, open space tracking, and interactive visualizations. Perfect for residential and mixed-use building projects.
+A Revit 2025 add-in that reads a multi-family model's rooms and areas and
+turns them into a unit schedule, an open-space tally and a dashboard,
+without anyone retyping a number.
 
-## Features
+![Unit Schedule dashboard inside Revit](docs/img/in-revit.webp)
 
-### Core Functionality
-- **Unit Scanning** - Automatically detects and catalogs all residential units from Revit rooms/areas
-- **Area Calculations** - Gross area, net area, and sellable area in Square Feet (Imperial)
-- **Unit Type Detection** - Smart pattern matching identifies Studio, 1BR, 2BR, 3BR, Penthouse, etc.
-
-### Open Space Tracking
-- **Private Open Spaces** - Balconies, patios, terraces associated with individual units
-- **Public Open Spaces** - Amenities, courtyards, rooftops, pool areas, playgrounds
-- **Coverage Analysis** - Tracks covered vs. uncovered areas for sellable area calculations
-
-### Dashboard & Visualization
-- **Statistics Cards** - Total units, gross/net area, efficiency ratios at a glance
-- **Interactive Charts** - Unit mix distribution, bedroom mix, area by type
-- **Professional UI** - Modern WPF design with Deep Blue (#1E3A8A), Teal (#14B8A6), Amber (#F59E0B) color scheme
-
-### Data Management
-- **Filtering & Search** - Filter by unit type, level, or search by unit number/name
-- **Multiple Exports** - CSV for Excel, comprehensive reports in TXT format
-- **Real-time Refresh** - Update data without restarting the plugin
-
-## Screenshots
-
-| Dashboard | Unit Schedule |
-|-----------|---------------|
-| Statistics cards and charts overview | Filterable unit list with all details |
-
-| Private Open Spaces | Export Options |
-|---------------------|----------------|
-| Balconies, patios, terraces by unit | CSV and report export functionality |
-
-## Installation
-
-### Requirements
-- Autodesk Revit 2025 or later
-- Windows 10/11 (64-bit)
-
-### Steps
-
-1. **Download** the latest release from [Releases](https://github.com/EthanAlong/UnitSchedulePlugin/releases)
-
-2. **Copy files** to your Revit Addins folder:
-   ```
-   %APPDATA%\Autodesk\Revit\Addins\2025\
-   ```
-   - `UnitSchedulePlugin.dll`
-   - `UnitSchedulePlugin.addin`
-
-3. **Restart Revit**
-
-4. Find the plugin under **Add-Ins** tab → **Unit Schedule** panel
-
-### Building from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/EthanAlong/UnitSchedulePlugin.git
-
-# Open in Visual Studio 2022
-# Or build with .NET CLI
-cd UnitSchedulePlugin
-dotnet build -c Release
-```
-
-## Usage
-
-1. Open a Revit project with rooms/areas defined
-2. Navigate to **Add-Ins** → **Unit Schedule**
-3. Click **Unit Schedule** button
-4. Explore the dashboard, filter units, and export data
-
-### Room Naming Conventions
-
-For best results, use consistent naming patterns:
-
-| Pattern | Detected As |
-|---------|-------------|
-| `Unit 101 - Living`, `101-LR` | Unit 101 |
-| `Studio`, `Bachelor` | Studio |
-| `1BR`, `1 Bedroom`, `One Bed` | 1 Bedroom |
-| `Balcony`, `Patio`, `Terrace` | Private Open Space |
-| `Courtyard`, `Amenity`, `Pool` | Public Open Space |
-
-## Project Structure
-
-```
-UnitSchedulePlugin/
-├── Command.cs                    # Revit IExternalCommand entry point
-├── Models/
-│   ├── UnitInfo.cs              # Unit data model
-│   ├── OpenSpaceInfo.cs         # Open space model
-│   └── ProjectStatistics.cs     # Aggregated statistics
-├── Helpers/
-│   ├── SpaceTypeIdentifier.cs   # Pattern matching for space types
-│   └── ColorPalette.cs          # Professional color scheme
-├── Services/
-│   ├── UnitScanner.cs           # Scans Revit for units
-│   ├── OpenSpaceAnalyzer.cs     # Analyzes open spaces
-│   └── ExportService.cs         # CSV and report exports
-├── ViewModels/
-│   ├── MainViewModel.cs         # MVVM ViewModel
-│   └── RelayCommand.cs          # ICommand implementation
-└── Views/
-    ├── MainWindow.xaml          # WPF UI (Pure WPF, no dependencies)
-    └── MainWindow.xaml.cs       # Code-behind
-```
-
-## Technical Details
-
-| Aspect | Details |
-|--------|---------|
-| **Target Framework** | .NET 8.0 Windows |
-| **Revit API** | 2025 |
-| **UI Framework** | WPF (Pure, no external dependencies) |
-| **Architecture** | MVVM Pattern |
-| **Units** | Imperial (Square Feet) |
-| **Language** | English UI, Bilingual Comments (EN + 中文) |
-
-## API Reference
-
-### UnitInfo Properties
-```csharp
-public class UnitInfo
-{
-    public string UnitNumber { get; set; }      // Unit identifier
-    public string UnitType { get; set; }        // Studio, 1BR, 2BR, etc.
-    public double GrossArea { get; set; }       // Total area (SF)
-    public double NetArea { get; set; }         // Usable area (SF)
-    public double SellableArea { get; set; }    // Marketable area (SF)
-    public double BalconyArea { get; set; }     // Private balcony (SF)
-    public double PatioArea { get; set; }       // Private patio (SF)
-    public double TerraceArea { get; set; }     // Private terrace (SF)
-    public int BedroomCount { get; set; }       // Number of bedrooms
-    public double Efficiency { get; set; }      // Net/Gross ratio (%)
-}
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Built with [Autodesk Revit API](https://www.revitapidocs.com/)
-- UI inspired by modern design systems
-- Developed with assistance from Claude AI
+<sub>Revit 2025 · .NET 8 · WPF / MVVM · read-only · MIT</sub>
 
 ---
 
-<p align="center">
-  Made with ❤️ for the AEC Industry
-</p>
+## Problem
+
+On multi-family and mixed-use jobs, the unit mix, unit areas and private /
+public open space are tallied by hand from the model, for every design
+iteration and every submission. The numbers drift from the model the moment
+the plan changes, and nobody trusts the spreadsheet.
+
+## What it does
+
+| | |
+|---|---|
+| **Scan** | Collects every placed Room and Area in the open model. |
+| **Classify** | Groups rooms into units by a `Unit Number` parameter when the model has one, otherwise by the room name; reads the type (Studio, 1BR, 2BR, 3BR, Penthouse) from names and bedroom count; sorts balconies, patios and terraces (private) from courtyards, roof decks and amenities (public). |
+| **Summarise** | Units, gross / net / sellable area, efficiency, unit-mix and bedroom-mix charts. |
+| **Export** | CSV per table, everything in one CSV, or a plain-text summary report. |
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph Revit["Revit 2025 (read-only)"]
+    DOC[(Model)]
+  end
+  DOC -->|"FilteredElementCollector<br/>Rooms · Areas"| US[UnitScanner]
+  DOC --> OS[OpenSpaceAnalyzer]
+  ST[SpaceTypeIdentifier<br/>regex naming rules] --> US
+  ST --> OS
+  US --> PS[ProjectStatistics]
+  OS --> PS
+  PS --> VM[MainViewModel<br/>filter · refresh]
+  VM --> UI[WPF window<br/>Dashboard · Schedule · Open space · Export]
+  VM --> EX[ExportService<br/>CSV · TXT]
+```
+
+- `Command.cs` is an `IExternalCommand` with `TransactionMode.ReadOnly`:
+  the add-in can never change the model.
+- `SpaceTypeIdentifier` holds every naming rule in one place, so supporting
+  a firm's own room-naming convention is a change to one file.
+- Pure WPF, no third-party UI or chart packages: nothing extra to approve
+  or install on a locked-down workstation.
+
+## Demo
+
+| Dashboard | Unit schedule |
+|---|---|
+| ![Dashboard](docs/img/dashboard.webp) | ![Unit schedule](docs/img/unit-schedule.webp) |
+| **Private open space** | **Export** |
+| ![Private open space](docs/img/private-open-space.webp) | ![Export](docs/img/export.webp) |
+
+Captured on Autodesk's *Snowdon Towers* sample model: 42 units,
+47,758 SF gross, 41,529 SF net, 87.0 % efficiency, 204 SF private and
+9,180 SF public open space.
+
+### Try it in five minutes
+
+1. Build (below) and copy `UnitSchedulePlugin.dll` + `UnitSchedulePlugin.addin`
+   into `%APPDATA%\Autodesk\Revit\Addins\2025\`.
+2. Open any model with placed rooms (the Snowdon Towers sample works).
+3. **Add-Ins → Unit Schedule**. Filter by type or level, then **Export**.
+
+## Install / build
+
+There is no prebuilt release yet: build from source.
+
+Requirements: Windows 10/11 x64, Revit 2025, .NET 8 SDK (or Visual Studio 2022).
+
+```bash
+git clone https://github.com/EthanAlong/UnitSchedulePlugin.git
+cd UnitSchedulePlugin/UnitSchedulePlugin
+dotnet build -c Release
+```
+
+The project references `RevitAPI.dll` / `RevitAPIUI.dll` from the default
+Revit 2025 install folder; edit the paths in `UnitSchedulePlugin.csproj` if
+yours differs.
+
+### Naming rules it understands
+
+| Room name | Read as |
+|---|---|
+| `Unit 101 - Living`, `101-LR` | Unit 101 |
+| `Studio`, `Bachelor` | Studio |
+| `1BR`, `1 Bedroom`, `One Bed` | 1 Bedroom |
+| `Balcony`, `Patio`, `Terrace` | Private open space |
+| `Courtyard`, `Amenity`, `Pool` | Public open space |
+
+## Design decisions
+
+- **Read-only by construction.** A schedule tool has no reason to write, and
+  a read-only transaction is what makes it safe to run on a live central model.
+- **Naming conventions over new parameters.** Most models already encode
+  the unit in the room name; asking a team to add shared parameters first
+  is where adoption dies. A `Unit Number` (or `Apartment Number`) parameter is used when it exists.
+- **Imperial only.** Built for US multi-family work; every area is SF.
+
+## Limitations / next
+
+- **Gross area is estimated** as net × 1.15 (walls ≈ 15 %), not measured,
+  unless Area elements are present. Next: read gross from an Area scheme.
+- Unit detection is only as good as the room naming; a room no rule matches
+  is reported as `Unknown` rather than guessed.
+- No binary release or installer yet; Revit 2025 only.
+
+## Project structure
+
+```
+UnitSchedulePlugin/
+├── Command.cs              IExternalCommand entry (read-only)
+├── Helpers/                SpaceTypeIdentifier (naming rules), ColorPalette
+├── Models/                 UnitInfo, OpenSpaceInfo, ProjectStatistics
+├── Services/               UnitScanner, OpenSpaceAnalyzer, ExportService
+├── ViewModels/             MainViewModel, RelayCommand
+└── Views/                  MainWindow.xaml (+ code-behind)
+```
+
+Product notes: [`Prd_RevitUnitSchedulePlugin.MD`](Prd_RevitUnitSchedulePlugin.MD).
+
+## License
+
+MIT, see [LICENSE](LICENSE).
